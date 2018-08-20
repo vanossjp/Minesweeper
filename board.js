@@ -12,19 +12,18 @@ export class Board {
   }
 
   flipTile(rowIndex, columnIndex) {
-
-    if (this._playerBoard[rowIndex, columnIndex] !== ' ') {
+    if (this._playerBoard[rowIndex][columnIndex] !== ' ') {
       return;
     }
     if (this._bombBoard[rowIndex][columnIndex] === 'B') {
       this._playerBoard[rowIndex][columnIndex] = 'B';
     } else {
-      this._playerBoard[rowIndex][columnIndex] = this.getNumberOfNeighborBombs (rowIndex, columnIndex)
-    };
+      this._playerBoard[rowIndex][columnIndex] = this.getNumberOfNeighborBombs(rowIndex, columnIndex);
+    }
     this._numberOfTiles --;
-  };
+  }
 
-  getNumberOfNeighborBombs (rowIndex, columnIndex) {
+  getNumberOfNeighborBombs(rowIndex, columnIndex) {
     const neighborOffsets = [
       [-1, 0],
       [-1, 1],
@@ -40,14 +39,14 @@ export class Board {
 
     let numberOfBombs = 0;
 
-    neighborOffsets.foreach(offset => {
+    neighborOffsets.forEach(offset => {
       const neighborRowIndex = rowIndex + offset[0];
       const neighborColumnIndex = columnIndex + offset[1];
 
       if (neighborRowIndex >= 0 &&
-        neighborRowIndex < numberOfRows &&
-        neighborColumnIndex >= 0 &&
-        neighborColumnIndex < numberOfColumns) {
+          neighborRowIndex < numberOfRows &&
+          neighborColumnIndex >= 0 &&
+          neighborColumnIndex < numberOfColumns) {
         if (this._bombBoard[neighborRowIndex][neighborColumnIndex] === 'B') {
           numberOfBombs++;
         }
@@ -57,11 +56,11 @@ export class Board {
   };
 
   hasSafeTiles() {
-    return (this._numberOfTiles !== this.numberOfBombs);
+    return (this._numberOfTiles !== this._numberOfBombs);
   }
 
   print() {
-    console.log(this.playerBoard.map(row => row.join(' | ')).join('\n'));
+    console.log(this._playerBoard.map(row => row.join(' | ')).join('\n'));
   }
 
   static generatePlayerBoard(numberOfRows, numberOfColumns) {
@@ -72,9 +71,9 @@ export class Board {
         row.push(' ');
       }
       board.push(row);
-      }
-      return board;
-    };
+    }
+    return board;
+  }
 
   static generateBombBoard(numberOfRows, numberOfColumns, numberOfBombs) {
     const board = [];
@@ -89,19 +88,21 @@ export class Board {
       }
       // Push the row onto the board array
       board.push(row);
-      }
-      let numberOfBombsPlaced = 0
-      while(numberOfBombsPlaced < numberOfBombs) {
+    }
+
+    let numberOfBombsPlaced = 0
+
+    while(numberOfBombsPlaced < numberOfBombs) {
         // Generate a random row index
         let randomRowIndex = Math.floor(Math.random() * numberOfRows);
         // Generate a random column index
         let randomColumnIndex = Math.floor(Math.random() * numberOfColumns);          //Set bomb generation conditions
-          if (board[randomRowIndex][randomColumnIndex] !== 'B') {
+        if (board[randomRowIndex][randomColumnIndex] !== 'B') {
             board[randomRowIndex][randomColumnIndex] = 'B';
             numberOfBombsPlaced++;
           }
       }
       // Return the board array
       return board;
-    };
+    }
 }

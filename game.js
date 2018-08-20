@@ -8,7 +8,6 @@
 // game.playMove(1, 2);
 // When done run `.exit`
 
-
 import { Board } from './board';
 
 
@@ -16,16 +15,17 @@ class Game {
   constructor(numberOfRows, numberOfColumns, numberOfBombs) {
     this._board = new Board(numberOfRows, numberOfColumns, numberOfBombs);
   }
+
   playMove(rowIndex, columnIndex) {
     this._board.flipTile(rowIndex, columnIndex);
 
     if (this._board.playerBoard[rowIndex][columnIndex] === 'B') {
-      console.log('Game Over! Try Again?');
+      console.log('Game Over! Final Board:');
       this._board.print();
     } else if (!this._board.hasSafeTiles()) {
-      console.log('Game Won! Congratulations!');
+      console.log('Congratulations, you won!');
     } else {
-      console.log('Current Board: ')
+      console.log('Current Board:');
       this._board.print();
     }
   }
